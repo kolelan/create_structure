@@ -70,6 +70,45 @@ def parse_structure(file_path, is_root_used=False):
     return structure
 
 
+def check_structure(structure, base_dir='', silent=False):
+    """Проверяет существование файлов и директорий без создания"""
+    missing_dirs = 0
+    missing_files = 0
+    existing_dirs = 0
+    existing_files = 0
+
+    for path, item_type in structure.items():
+        full_path = os.path.join(base_dir, path) if base_dir else path
+
+        if item_type == 'dir':
+            if os.path.exists(full_path):
+                existing_dirs += 1
+                if not silent:
+                    print(f"Directory exists: {full_path}/")
+            else:
+                missing_dirs += 1
+                if not silent:
+                    print(f"Directory missing: {full_path}/")
+        elif item_type == 'file':
+            if os.path.exists(full_path):
+                existing_files += 1
+                if not silent:
+                    print(f"File exists: {full_path}")
+            else:
+                missing_files += 1
+                if not silent:
+                    print(f"File missing: {full_path}")
+
+    if not silent:
+        print("\nCheck results:")
+        print(f"Existing directories: {existing_dirs}")
+        print(f"Missing directories: {missing_dirs}")
+        print(f"Existing files: {existing_files}")
+        print(f"Missing files: {missing_files}")
+
+    return missing_dirs == 0 and missing_files == 0
+
+
 def create_structure(structure, base_dir='', silent=False):
     """Создает файлы и директории с подсчетом статистики"""
     dirs_created = 0
@@ -119,12 +158,14 @@ def create_structure(structure, base_dir='', silent=False):
 
 
 def main():
-    parser = argparse.ArgumentParser(description='Create directory structure from file')
+    parser = argparse.ArgumentParser(description='Create or check directory structure from file')
     parser.add_argument('structure_file', nargs='?', default='structure.txt',
                         help='File with structure definition (default: structure.txt)')
     parser.add_argument('--silent', action='store_true', help='Suppress output')
     parser.add_argument('--use-root', action='store_true',
                         help='Create root directory and build inside it')
+    parser.add_argument('--check-only', action='store_true',
+                        help='Check structure without creating anything')
     args = parser.parse_args()
 
     # Проверяем существование файла со структурой
@@ -142,20 +183,35 @@ def main():
             return
 
         base_dir = root_dir_name
-        if not os.path.exists(base_dir):
-            os.makedirs(base_dir, exist_ok=True)
-            if not args.silent:
-                print(f"Created root directory: {base_dir}/")
+        if not args.check_only:
+            if not os.path.exists(base_dir):
+                os.makedirs(base_dir, exist_ok=True)
+                if not args.silent:
+                    print(f"Created root directory: {base_dir}/")
+            else:
+                if not args.silent:
+                    print(f"Using existing root directory: {base_dir}/")
         else:
-            if not args.silent:
-                print(f"Using existing root directory: {base_dir}/")
+            if os.path.exists(base_dir):
+                if not args.silent:
+                    print(f"Root directory exists: {base_dir}/")
+            else:
+                if not args.silent:
+                    print(f"Root directory missing: {base_dir}/")
 
     # Парсим структуру (учитываем использование корня)
     structure = parse_structure(args.structure_file, args.use_root)
-    dirs_created, files_created = create_structure(structure, base_dir, args.silent)
 
-    if not args.silent:
-        print("\nOperation completed successfully!")
+    if args.check_only:
+        all_exists = check_structure(structure, base_dir, args.silent)
+        if not args.silent:
+            print("\nCheck completed. Structure is", "complete" if all_exists else "incomplete")
+        return 0 if all_exists else 1
+    else:
+        dirs_created, files_created = create_structure(structure, base_dir, args.silent)
+        if not args.silent:
+            print("\nOperation completed successfully!")
+        return 0
 
 
 if __name__ == '__main__':
