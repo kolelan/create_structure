@@ -1,0 +1,49 @@
+project-root/
+│
+├── docker-compose.yml
+├── .env
+│
+├── db/
+│   ├── Dockerfile
+│   ├── init.sql
+│   └── postgresql.conf
+│
+├── php-cli/
+│   ├── docker/
+│   │   ├── Dockerfile
+│   │   └── php.ini
+│   ├── src/
+│   │   ├── commands/
+│   │   │   └── FileController.php
+│   │   ├── config/
+│   │   │   └── console.php
+│   │   ├── models/
+│   │   │   └── File.php
+│   │   └── vendor/
+│   └── composer.json
+│
+└── php-apache/
+    ├── docker/
+    │   ├── Dockerfile
+    │   ├── php.ini
+    │   └── vhost.conf
+    └── src/
+        ├── assets/
+        ├── commands/
+        ├── config/
+        │   ├── console.php
+        │   └── web.php
+        ├── controllers/
+        │   └── SiteController.php
+        ├── models/
+        ├── runtime/
+        ├── vendor/
+        ├── views/
+        │   └── site/
+        │       ├── index.php
+        │       └── upload.php
+        ├── web/
+        │   ├── css/
+        │   ├── index.php
+        │   └── uploads/
+        └── composer.json
