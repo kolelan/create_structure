@@ -1,65 +1,65 @@
-# Генератор структуры директорий и файлов
+# Directory and File Structure Generator
 
-Скрипт для автоматического создания структуры директорий и файлов на основе текстового описания.
+A script for automatically creating directory and file structures based on a text description.
 
-## Возможности
+## Features
 
-- Создание структуры директорий и файлов по описанию
-- Поддержка комментариев в файле структуры
-- Проверка существующей структуры без изменений (`--check-only`)
-- Работа с корневой директорией (`--use-root`)
-- Тихий режим (`--silent`)
-- Подробная статистика выполнения
-- Поддержка пользовательских файлов структуры
+- Create directory and file structures from description
+- Support for comments in structure files
+- Check existing structure without modifications (`--check-only`)
+- Work with root directory (`--use-root`)
+- Silent mode (`--silent`)
+- Detailed execution statistics
+- Support for custom structure files
 
-## Установка
+## Installation
 
-1. Убедитесь, что у вас установлен Python 3.6+
-2. Скопируйте скрипт `create_structure.py` в нужную директорию
+1. Ensure you have Python 3.6+ installed
+2. Copy the `create_structure.py` script to your desired directory
 
-## Использование
+## Usage
 
-### Базовое использование
+### Basic Usage
 
 ```bash
-python create_structure.py [файл_структуры] [опции]
+python create_structure.py [structure_file] [options]
 ```
 
-Если файл структуры не указан, используется `structure.txt` по умолчанию.
+If no structure file is specified, `structure.txt` will be used by default.
 
-### Опции
+### Options
 
-| Опция        | Описание                                                                 |
+| Option        | Description                                                                 |
 |--------------|--------------------------------------------------------------------------|
-| `--use-root` | Создать и использовать корневую директорию из первой строки файла       |
-| `--check-only` | Только проверить существование структуры, не создавать ничего          |
-| `--silent`   | Тихий режим (не выводить информацию о создании)                         |
+| `--use-root` | Create and use root directory from the first line of the file       |
+| `--check-only` | Only check structure existence without creating anything          |
+| `--silent`   | Silent mode (suppress creation output)                         |
 
-### Примеры
+### Examples
 
-1. Создать структуру из файла `structure.txt`:
+1. Create structure from `structure.txt`:
    ```bash
    python create_structure.py
    ```
 
-2. Создать структуру с корневой директорией:
+2. Create structure with root directory:
    ```bash
    python create_structure.py --use-root
    ```
 
-3. Проверить существование структуры:
+3. Check structure existence:
    ```bash
    python create_structure.py --check-only my-structure.txt
    ```
 
-4. Тихий режим с пользовательским файлом:
+4. Silent mode with custom file:
    ```bash
    python create_structure.py custom-structure.txt --silent
    ```
 
-## Формат файла структуры
+## Structure File Format
 
-Файл должен содержать описание структуры в виде дерева. Пример:
+The file should contain structure description as a tree. Example:
 
 ```
 project-root/
@@ -73,31 +73,36 @@ project-root/
 │   └── postgresql.conf
 │
 └── php/
-     ├── src/                  # Общий исходный код для обоих сервисов
-     └── composer.json         # Общие зависимости
+     ├── src/                  # Shared source code for both services
+     └── composer.json         # Common dependencies
 ```
 
-### Правила:
-- Директории заканчиваются символом `/`
-- Файлы указываются без `/`
-- Символы `│`, `├──`, `└──` используются для оформления и игнорируются
-- **Комментарии**:
-  - Могут быть добавлены после `#` в любой строке
-  - Всё что после `#` игнорируется скриптом
-  - Могут использоваться для пояснений к структуре
+### Rules:
+- Directories end with `/`
+- Files are specified without `/`
+- Symbols `│`, `├──`, `└──` are used for formatting and are ignored
+- **Comments**:
+  - Can be added after `#` in any line
+  - Everything after `#` is ignored by the script
+  - Can be used for structure explanations
 
-## Возвращаемые коды
+## Return Codes
 
-- `0` - успешное выполнение
-- `1` - ошибка (файл не найден, проблемы с созданием)
+- `0` - success
+- `1` - error (file not found, creation problems)
 
-## Логирование
+## Logging
 
-При отсутствии флага `--silent` скрипт выводит:
-- Созданные/существующие директории и файлы
-- Статистику выполнения
-- Результаты проверки (в режиме `--check-only`)
+When `--silent` flag is not used, the script outputs:
+- Created/existing directories and files
+- Execution statistics
+- Check results (in `--check-only` mode)
 
-## Лицензия
+## 🌍 Available Translations | Доступные переводы | 可用翻译
+- 🇬🇧 [English](Readme.md) - English version  
+- 🇷🇺 [Русский](Readme_ru.md) - Русская версия  
+- 🇨🇳 [中文](Readme_ch.md) - 中文版本
+
+## License
 
 MIT
