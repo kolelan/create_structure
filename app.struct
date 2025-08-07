@@ -3,12 +3,12 @@ project-root/
 ├── docker-compose.yml
 ├── .env
 │
-├── db/
+├── db/                                 # Сервис базы данных
 │   ├── Dockerfile
 │   ├── init.sql
 │   └── postgresql.conf
 │
-├── php-cli/
+├── php-cli/                            # Сервис косольных команд
 │   ├── docker/
 │   │   ├── Dockerfile
 │   │   └── php.ini
@@ -22,7 +22,7 @@ project-root/
 │   │   └── vendor/
 │   └── composer.json
 │
-└── php-apache/
+└── php-apache/                         # Сервис веб приложения
     ├── docker/
     │   ├── Dockerfile
     │   ├── php.ini

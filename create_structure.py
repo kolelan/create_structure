@@ -9,8 +9,10 @@ def find_root_directory(file_path):
         for line in file:
             line = line.strip()
             if line and not all(c in ['│', ' ', '├', '└', '─', 'в”‚', 'в”њ', 'в”Ђ', 'в”'] for c in line):
-                if line.endswith('/'):
-                    return line[:-1]
+                # Удаляем комментарии перед проверкой
+                clean_line = line.split('#')[0].strip()
+                if clean_line.endswith('/'):
+                    return clean_line[:-1]
     return None
 
 
@@ -24,13 +26,15 @@ def parse_structure(file_path, is_root_used=False):
     root_processed = False
 
     for line in lines:
-        # Пропускаем декоративные строки
-        line_stripped = line.strip()
-        if not line_stripped or all(c in ['│', ' ', '├', '└', '─', 'в”‚', 'в”њ', 'в”Ђ', 'в”'] for c in line_stripped):
+        # Удаляем комментарии из строки
+        clean_line = line.split('#')[0].strip()
+
+        # Пропускаем декоративные строки и пустые строки после удаления комментариев
+        if not clean_line or all(c in ['│', ' ', '├', '└', '─', 'в”‚', 'в”њ', 'в”Ђ', 'в”'] for c in clean_line):
             continue
 
         # Пропускаем корневую директорию если она уже обработана (при --use-root)
-        if not root_processed and line_stripped.endswith('/'):
+        if not root_processed and clean_line.endswith('/'):
             root_processed = True
             if not is_root_used:
                 continue  # Пропускаем корень если не используем --use-root
@@ -45,26 +49,28 @@ def parse_structure(file_path, is_root_used=False):
 
         current_dir = current_dir[:indent]
 
-        # Обрабатываем элементы структуры
-        if '├── ' in line:
-            item = line.split('├── ')[1].strip()
-        elif '└── ' in line:
-            item = line.split('└── ')[1].strip()
+        # Обрабатываем элементы структуры (используем clean_line без комментариев)
+        if '├── ' in clean_line:
+            item = clean_line.split('├── ')[1].strip()
+        elif '└── ' in clean_line:
+            item = clean_line.split('└── ')[1].strip()
         else:
-            item = line_stripped
+            item = clean_line
             if not item.endswith('/'):
                 continue
 
         if item.endswith('/'):
+            # Директория
             dir_name = item[:-1]
             current_dir.append(dir_name)
             full_path = os.path.join(*current_dir)
             structure[full_path] = 'dir'
         else:
+            # Файл
             full_path = os.path.join(*current_dir, item)
             structure[full_path] = 'file'
 
-            if '└── ' in line:
+            if '└── ' in clean_line:
                 current_dir = current_dir[:-1]
 
     return structure

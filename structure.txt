@@ -1,22 +1,22 @@
 project-root/
-├── docker-compose.yml
-├── .env
+├── docker-compose.yml              # Файл с общей конфигурацией контейнеров
+├── .env                            # Файл с переменными окружения
 │
 ├── db/
-│   ├── Dockerfile
-│   ├── init.sql
-│   └── postgresql.conf
+│   ├── Dockerfile                  # Докер файл для базы данных
+│   ├── init.sql                    # Инициализация базы данных
+│   └── postgresql.conf             # Конфигурация сервера Postgres
 │
-└── php-cli/
-    ├── docker/
-    │   ├── Dockerfile
-    │   └── php.ini
-    ├── src/
-    │   ├── commands/
-    │   │   └── FileController.php
-    │   ├── config/
-    │   │   └── console.php
-    │   ├── models/
-    │   │   └── File.php
-    │   └── vendor/
-    └── composer.json
+└── php-cli/                        # Сервис консольной работы с PHP
+    ├── docker/                     # Контекст сборки контейна сервиса
+    │   ├── Dockerfile              # Докерфайл сервиса
+    │   └── php.ini                 # Конфигруация PHP сервиса
+    ├── src/                        # Подключаемый код
+    │   ├── commands/               # Консольные команды сервиса
+    │   │   └── FileController.php  # Контроллер выполнения команд
+    │   ├── config/                 # Папка с конфигурацией приложения
+    │   │   └── console.php         # Конфигурационный файл приоложения
+    │   ├── models/                 # Модели приложения
+    │   │   └── File.php            # Модель файлов
+    │   └── vendor/                 # Папка с сзависимостями приложения
+    └── composer.json               # Когфигурация композера
