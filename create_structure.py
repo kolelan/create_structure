@@ -3,14 +3,24 @@ import argparse
 from pathlib import Path
 
 
+def clean_line_from_comments(line, comment_symbol='#'):
+    """
+    Очищает строку от комментариев.
+    Возвращает очищенную строку без хвостовых пробелов.
+    Если comment_symbol не найден, возвращает исходную строку.
+    """
+    if comment_symbol in line:
+        return line.split(comment_symbol)[0].strip()
+    return line.strip()
+
+
 def find_root_directory(file_path):
     """Находит имя корневой директории в файле"""
     with open(file_path, 'r', encoding='utf-8') as file:
         for line in file:
             line = line.strip()
             if line and not all(c in ['│', ' ', '├', '└', '─', 'в”‚', 'в”њ', 'в”Ђ', 'в”'] for c in line):
-                # Удаляем комментарии перед проверкой
-                clean_line = line.split('#')[0].strip()
+                clean_line = clean_line_from_comments(line)
                 if clean_line.endswith('/'):
                     return clean_line[:-1]
     return None
@@ -26,8 +36,8 @@ def parse_structure(file_path, is_root_used=False):
     root_processed = False
 
     for line in lines:
-        # Удаляем комментарии из строки
-        clean_line = line.split('#')[0].strip()
+        # Очищаем строку от комментариев
+        clean_line = clean_line_from_comments(line)
 
         # Пропускаем декоративные строки и пустые строки после удаления комментариев
         if not clean_line or all(c in ['│', ' ', '├', '└', '─', 'в”‚', 'в”њ', 'в”Ђ', 'в”'] for c in clean_line):
@@ -41,7 +51,7 @@ def parse_structure(file_path, is_root_used=False):
             else:
                 continue  # Корень уже создан, пропускаем
 
-        # Определяем уровень вложенности
+        # Определяем уровень вложенности (используем оригинальную строку)
         indent = 0
         while line.startswith('│   ') or line.startswith('    '):
             line = line[4:]
