@@ -14,7 +14,7 @@ A script for automatically creating directory and file structures based on a tex
 
 ## Installation
 
-1. Ensure you have Python 3.6+ installed
+1. Ensure you have Python 3.8+ installed
 2. Copy the `create_structure.py` script to your desired directory
 
 ## Usage
@@ -56,6 +56,62 @@ If no structure file is specified, `structure.txt` will be used by default.
    ```bash
    python create_structure.py custom-structure.txt --silent
    ```
+
+## Quick start: run via prepared scripts
+
+The repository includes ready-to-use runner scripts that:
+- check Python version (require Python 3.8+),
+- ensure `structure.txt` exists and is non-empty,
+- download `create_structure.py` if missing,
+- run the script.
+
+### Windows (PowerShell)
+
+From the project root:
+
+```powershell
+# Execute the included runner (if present locally)
+pwsh bin/run_create_structure.ps1
+```
+
+### Linux/macOS (Bash)
+
+From the project root:
+
+```bash
+# Execute the included runner (if present locally)
+bash bin/run_create_structure.sh
+```
+
+## How to download the script into your project
+
+If you don't have `create_structure.py` in your project yet, download it directly from the upstream repository.
+
+### Windows (PowerShell)
+
+```powershell
+Invoke-WebRequest -Uri "https://raw.githubusercontent.com/kolelan/create_structure/refs/heads/main/create_structure.py" -OutFile "create_structure.py" -UseBasicParsing
+```
+
+### Linux/macOS (Bash)
+
+```bash
+# Using curl
+curl -fsSL "https://raw.githubusercontent.com/kolelan/create_structure/refs/heads/main/create_structure.py" -o create_structure.py
+
+# Or using wget
+wget -q "https://raw.githubusercontent.com/kolelan/create_structure/refs/heads/main/create_structure.py" -O create_structure.py
+```
+
+After downloading, you can run it directly:
+
+```bash
+python create_structure.py [structure_file] [options]
+```
+
+Notes:
+- The runners look for `structure.txt` in the current working directory.
+- If `create_structure.py` is absent, the runners will attempt to download it automatically from the repository.
 
 ## Structure File Format
 
